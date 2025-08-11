@@ -16,13 +16,6 @@ export class ValidationException extends HttpException {
   }
 }
 
-export class NotFoundException extends HttpException {
-  constructor(message = 'Not found') {
-    super(404, message);
-    Object.setPrototypeOf(this, NotFoundException.prototype);
-  }
-}
-
 export class UnauthorizedException extends HttpException {
   constructor(message = 'Unauthorized') {
     super(401, message);
@@ -37,6 +30,12 @@ export class ForbiddenException extends HttpException {
   }
 }
 
+export class NotFoundException extends HttpException {
+  constructor(message = 'Not found') {
+    super(404, message);
+    Object.setPrototypeOf(this, NotFoundException.prototype);
+  }
+}
 
 export class ConflictException extends HttpException {
   constructor(message = 'Conflict') {

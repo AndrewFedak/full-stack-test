@@ -15,7 +15,7 @@ import {
 } from '../services/projectService';
 
 export const addProject = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { repoPath } = validate(AddProjectDto, req.body) as { repoPath: string };
+  const { repoPath } = validate(AddProjectDto, req.body);
   const project = await addProjectService(repoPath, req.user!.id);
   res.status(201).json(project);
 });
@@ -27,7 +27,7 @@ export const listProjects = catchAsync(async (req: AuthRequest, res: Response) =
 
 export const updateProjectData = catchAsync(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  const { repoPath } = validate(AddProjectDto, req.body) as { repoPath: string };
+  const { repoPath } = validate(AddProjectDto, req.body);
   const updated = await updateProjectService(Number(id), repoPath);
   res.json(updated);
 });
