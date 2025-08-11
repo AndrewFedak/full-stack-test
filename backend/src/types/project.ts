@@ -1,5 +1,5 @@
 export interface Project {
-    id: number;
+    id: string;
     owner: string;
     name: string;
     url: string;
@@ -7,5 +7,5 @@ export interface Project {
     forks: number;
     issues: number;
     createdAt: number;
-    userId: number;
+    userId: string;
 }

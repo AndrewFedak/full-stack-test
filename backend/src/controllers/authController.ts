@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
-import { RegisterDto, LoginDto } from '../dtos/auth.dto';
 import { validate } from '../utils/validate';
-import { registerService, loginService } from '../services/authService';
 import { catchAsync } from '../utils/catchAsync';
+
+import { RegisterDto, LoginDto } from '../dtos/auth.dto';
+
+import { registerService, loginService } from '../services/authService';
 
 export const register = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = validate(RegisterDto, req.body);

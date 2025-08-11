@@ -11,6 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useAddProject } from '../hooks/useProjects';
+import { AxiosError } from 'axios';
+import { ApiError } from '../services/api';
 
 interface AddProjectDialogProps {
   open: boolean;
@@ -49,10 +51,10 @@ export const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClos
           <Typography variant="body2" color="textSecondary" gutterBottom>
             Example: facebook/react
           </Typography>
-          
+
           {addProjectMutation.isError && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              {addProjectMutation.error?.response?.data?.message || 'Failed to add project'}
+              {(addProjectMutation.error as ApiError).message || 'Failed to add project'}
             </Alert>
           )}
 

@@ -9,6 +9,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useRegister } from '../hooks/useAuth';
+import { ApiError } from '../services/api';
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -53,7 +54,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
         
         {registerMutation.isError && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {registerMutation.error?.response?.data?.message || 'Registration failed'}
+            {(registerMutation.error as ApiError).message || 'Registration failed'}
           </Alert>
         )}
 

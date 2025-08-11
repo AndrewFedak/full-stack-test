@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useUpdateProject } from '../hooks/useProjects';
-import { Project } from '../services/api';
+import { ApiError, Project } from '../services/api';
 
 interface EditProjectDialogProps {
   open: boolean;
@@ -56,7 +56,7 @@ export const EditProjectDialog: React.FC<EditProjectDialogProps> = ({ open, proj
           
           {updateProjectMutation.isError && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              {updateProjectMutation.error?.response?.data?.message || 'Failed to update project'}
+              {(updateProjectMutation.error as ApiError).message || 'Failed to update project'}
             </Alert>
           )}
 

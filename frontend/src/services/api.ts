@@ -2,6 +2,13 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+export interface ApiError {
+  message: string;
+  status?: number;
+  code?: string;
+  details?: any;
+}
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -25,8 +32,21 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/login';
+
+      return Promise.reject({
+        message: 'Unauthorized. Redirecting to login.',
+        status: 401,
+      } as ApiError);
     }
-    return Promise.reject(error);
+
+    const apiError: ApiError = {
+      message: error.response?.data?.message || error.message || 'Unknown error',
+      status: error.response?.status,
+      code: error.response?.data?.code,
+      details: error.response?.data,
+    };
+
+    return Promise.reject(apiError);
   }
 );
 

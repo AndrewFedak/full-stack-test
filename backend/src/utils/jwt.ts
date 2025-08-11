@@ -7,7 +7,7 @@ const JWT_EXPIRES_IN = '1d';
  * @param userId - User ID to include in the token
  * @returns string - JWT token
  */
-export function generateToken(userId: number): string {
+export function generateToken(userId: string): string {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('JWT_SECRET environment variable is not set');
@@ -21,11 +21,11 @@ export function generateToken(userId: number): string {
  * @param token - JWT token to verify
  * @returns object - Decoded token payload
  */
-export function verifyToken(token: string): { id: number } {
+export function verifyToken(token: string): { id: string } {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('JWT_SECRET environment variable is not set');
   }
   
-  return jwt.verify(token, secret) as { id: number };
+  return jwt.verify(token, secret) as { id: string };
 }

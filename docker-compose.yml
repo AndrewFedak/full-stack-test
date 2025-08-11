@@ -1,31 +1,31 @@
 version: '3.8'
+
 services:
   backend:
-    build: ./backend
+    image: node:20
+    working_dir: /app
+    command: /bin/sh -c "npm run dev"
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
-      - MONGO_URL=mongodb://mongo:27017/crm
+      - MONGODB_URI=mongodb://mongo:27017/crm-app
+      - JWT_SECRET=your-secret-key-here
+    volumes:
+      - ./backend:/app
     depends_on:
-      - db
       - mongo
+
   frontend:
-    build: ./frontend
+    image: node:20
+    working_dir: /app
+    command: /bin/sh -c "npm run start"
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/app
     depends_on:
       - backend
-  db:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+
   mongo:
     image: mongo:6
     restart: always
@@ -33,6 +33,6 @@ services:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+
 volumes:
-  pgdata:
   mongodata:

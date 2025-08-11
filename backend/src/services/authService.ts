@@ -1,8 +1,11 @@
-import { createUser, findUserByEmail } from '../models/User';
 import { ConflictException, UnauthorizedException } from '../exceptions/HttpException';
-import { UserResponse, LoginResponse } from '../dtos/auth.dto';
+
 import { hashPassword, comparePassword } from '../utils/crypto';
 import { generateToken } from '../utils/jwt';
+
+import { UserResponse, LoginResponse } from '../dtos/auth.dto';
+
+import { createUser, findUserByEmail } from '../infrastructure/models/User';
 
 export async function registerService(email: string, password: string): Promise<UserResponse> {
   const existing = await findUserByEmail(email);

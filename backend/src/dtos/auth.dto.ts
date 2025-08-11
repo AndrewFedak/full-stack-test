@@ -11,7 +11,7 @@ export const LoginDto = z.object({
 });
 
 export const UserResponseDto = z.object({
-  id: z.number().int(),
+  id: z.string(),
   email: z.string().email(),
 });
 
@@ -20,7 +20,7 @@ export const LoginResponseDto = z.object({
 });
 
 export const UserDto = z.object({
-  id: z.number().int(),
+  id: z.string(),
   email: z.string().email(),
   password: z.string(),
 });

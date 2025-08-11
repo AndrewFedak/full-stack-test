@@ -7,5 +7,9 @@ export const AddProjectDto = z.object({
 export type AddProjectInput = z.infer<typeof AddProjectDto>;
 
 export interface CreateProjectData extends GitHubProjectData {
-  userId: number;
+  userId: string;
+}
+
+export interface UpdateProjectData extends GitHubProjectData {
+  id: string
 }
