@@ -2,24 +2,24 @@ import { IProject, Project } from "../../infrastructure/models/Project";
 
 import { GitHubProjectData } from "../../types";
 
-import { CreateProjectData } from "./dtos/project.dto";
+export class ProjectRepository {
+  public async createProject(userId: string, project: GitHubProjectData): Promise<IProject> {
+    return await Project.create({...project, userId});
+  }
 
-export async function createProject(project: CreateProjectData): Promise<IProject> {
-  return Project.create(project);
-}
+  public async updateProject(id: string, project: GitHubProjectData): Promise<IProject | null> {
+    return await Project.findByIdAndUpdate(id, project, { new: true });
+  }
 
-export async function updateProject(id: string, project: GitHubProjectData): Promise<IProject | null> {
-  return await Project.findByIdAndUpdate(id, project, { new: true });
-}
+  public async getProjectsByUser(userId: string): Promise<IProject[]> {
+    return await Project.find({ userId });
+  }
 
-export async function getProjectsByUser(userId: string): Promise<IProject[]> {
-  return Project.find({ userId });
-}
+  public async getProjectById(id: string): Promise<IProject | null> {
+    return await Project.findById(id);
+  }
 
-export async function getProjectById(id: string): Promise<IProject | null> {
-  return Project.findById(id);
-}
-
-export async function deleteProject(id: string): Promise<void> {
-  await Project.findByIdAndDelete(id);
+  public async deleteProject(id: string): Promise<void> {
+    await Project.findByIdAndDelete(id);
+  }
 }

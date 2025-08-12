@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Button,
-  Alert,
-  CircularProgress,
-  Typography,
-} from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+
+
+import { ApiError } from '../services/api';
+import { Project } from '../services/projectsApi';
+
 import { useUpdateProject } from '../hooks/useProjects';
-import { ApiError, Project } from '../services/api';
 
 interface EditProjectDialogProps {
   open: boolean;

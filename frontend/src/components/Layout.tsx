@@ -1,23 +1,26 @@
 import React from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Box,
-  Container,
-  Fab,
-} from '@mui/material';
-import { Add, Logout } from '@mui/icons-material';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Fab from '@mui/material/Fab';
+
+import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import { ProjectList } from './ProjectList';
 import { AddProjectDialog } from './AddProjectDialog';
+import { useNavigate } from 'react-router-dom';
 
 export const Layout: React.FC = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    window.location.href = '/login';
+    navigate('/login')
   };
 
   return (
@@ -29,7 +32,7 @@ export const Layout: React.FC = () => {
           </Typography>
           <Button
             color="inherit"
-            startIcon={<Logout />}
+            startIcon={<LogoutIcon />}
             onClick={handleLogout}
           >
             Logout
@@ -47,7 +50,7 @@ export const Layout: React.FC = () => {
         sx={{ position: 'fixed', bottom: 16, right: 16 }}
         onClick={() => setIsAddDialogOpen(true)}
       >
-        <Add />
+        <AddIcon />
       </Fab>
 
       <AddProjectDialog

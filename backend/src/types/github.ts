@@ -1,3 +1,5 @@
+import { Project } from "./project";
+
 export interface GitHubRepository {
   owner: {
     login: string;
@@ -10,12 +12,4 @@ export interface GitHubRepository {
   created_at: string;
 }
 
-export interface GitHubProjectData {
-  owner: string;
-  name: string;
-  url: string;
-  stars: number;
-  forks: number;
-  issues: number;
-  createdAt: number;
-}
+export type GitHubProjectData = Omit<Project, 'id' | 'userId'>

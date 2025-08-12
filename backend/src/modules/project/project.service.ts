@@ -1,31 +1,60 @@
-import { fetchRepositoryData } from './github.service';
+import { NotFoundException } from "../../exceptions/HttpException";
+import { validate } from "../../utils/validate";
 
-import { NotFoundException } from '../../exceptions/HttpException';
+import { ProjectResponse, ProjectResponseDto } from "./dtos/project.dto";
 
-import { createProject, getProjectsByUser, getProjectById, updateProject, deleteProject } from './project.repository';
+import { GitHubService } from "./github.service";
+import { ProjectRepository } from "./project.repository";
 
-export async function addProjectService(repoPath: string, userId: string) {
-  const gitHubRepositoryData = await fetchRepositoryData(repoPath);
-  return await createProject({
-    ...gitHubRepositoryData,
-    userId,
-  });
-}
+export class ProjectService {
+  constructor(
+    private readonly projectRepository: ProjectRepository,
+    private readonly gitHubService: GitHubService
+  ) {}
 
-export async function listProjectsService(userId: string) {
-  return getProjectsByUser(userId);
-}
-
-export async function updateProjectService(id: string, repoPath: string) {
-  const projectData = await getProjectById(id);
-  if (!projectData) {
-    throw new NotFoundException('Project not found')
+  public async addProject(repoPath: string, userId: string): Promise<void> {
+    const gitHubRepositoryData = await this.gitHubService.fetchRepositoryData(repoPath);
+  
+    await this.projectRepository.createProject(userId, gitHubRepositoryData)
   }
-  const gitHubRepositoryData = await fetchRepositoryData(repoPath);
-  return await updateProject(id, gitHubRepositoryData)
-}
 
+  public async listProjects(userId: string): Promise<ProjectResponse[]> {
+    const projects = await this.projectRepository.getProjectsByUser(userId)
 
-export async function removeProjectService(id: string) {
-  return deleteProject(id);
+    return projects.map(project => validate(ProjectResponseDto, project));
+  }
+
+  public async updateProject(id: string, repoPath: string): Promise<void> {
+    const projectData = await this.projectRepository.getProjectById(id);
+    if (!projectData) {
+      throw new NotFoundException("Project not found");
+    }
+
+    const gitHubRepositoryData = await this.gitHubService.fetchRepositoryData(repoPath);
+
+    const updated = await this.projectRepository.updateProject(id, gitHubRepositoryData);
+
+    if (updated === null) {
+      throw new NotFoundException(`Project with id ${id} not found or could not be updated`)
+    }
+  }
+
+  public async refreshProject(id: string): Promise<void> {
+    const projectData = await this.projectRepository.getProjectById(id);
+    if (!projectData) {
+      throw new NotFoundException("Project not found");
+    }
+    const repoPath = this.gitHubService.buildRepositoryPath(projectData.owner, projectData.name);
+    const gitHubRepositoryData = await this.gitHubService.fetchRepositoryData(repoPath);
+
+    const refreshed = await this.projectRepository.updateProject(id, gitHubRepositoryData);
+
+    if (refreshed === null) {
+      throw new NotFoundException(`Project with id ${id} not found or could not be refreshed`)
+    }
+  }
+
+  public async removeProject(id: string): Promise<void> {
+    await this.projectRepository.deleteProject(id);
+  }
 }

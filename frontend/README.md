@@ -21,7 +21,7 @@ npm install
 
 2. Create a `.env` file in the frontend directory:
 ```
-REACT_APP_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000/api
 ```
 
 3. Start the development server:

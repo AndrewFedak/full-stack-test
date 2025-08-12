@@ -1,42 +1,64 @@
+import { Response, Router } from "express";
+import { AuthRequest, authenticateToken } from "../../middleware/auth";
+import { validate } from "../../utils/validate";
+import { catchAsync } from "../../utils/catchAsync";
 
-import { Response, Router } from 'express';
-import { AuthRequest, authenticateToken } from '../../middleware/auth';
+import { AddProjectDto } from "./dtos/project.dto";
 
-import { validate } from '../../utils/validate';
-import { catchAsync } from '../../utils/catchAsync';
+import { ProjectService } from "./project.service";
 
-import { AddProjectDto } from './dtos/project.dto';
-import { addProjectService, listProjectsService, updateProjectService, removeProjectService } from './project.service';
+export class ProjectController {
+  public router: Router;
 
-export const addProject = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { repoPath } = validate(AddProjectDto, req.body);
-  const project = await addProjectService(repoPath, req.user!.id);
-  res.status(201).json(project);
-});
+  constructor(private readonly projectService: ProjectService) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-export const listProjects = catchAsync(async (req: AuthRequest, res: Response) => {
-  const projects = await listProjectsService(req.user!.id);
-  res.json(projects);
-});
+  private initializeRoutes() {
+    this.router.post("/", authenticateToken, catchAsync(this.addProject.bind(this)));
+    this.router.get("/", authenticateToken, catchAsync(this.listProjects.bind(this)));
+    this.router.put("/:id", authenticateToken, catchAsync(this.updateProjectData.bind(this)));
+    this.router.put("/:id/refresh", authenticateToken, catchAsync(this.refreshProjectData.bind(this)));
+    this.router.delete("/:id", authenticateToken, catchAsync(this.removeProject.bind(this)));
+  }
 
-export const updateProjectData = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { id } = req.params;
-  const { repoPath } = validate(AddProjectDto, req.body);
-  const updated = await updateProjectService(id, repoPath);
-  res.json(updated);
-});
+  private async addProject(req: AuthRequest, res: Response) {
+    const { repoPath } = validate(AddProjectDto, req.body);
 
-export const removeProject = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { id } = req.params;
-  await removeProjectService(id);
-  res.status(204).send();
-});
+    const project = await this.projectService.addProject(repoPath, req.user!.id);
 
-const router = Router();
+    res.status(201).json(project);
+  }
 
-router.get('/', authenticateToken, listProjects);
-router.post('/', authenticateToken, addProject);
-router.put('/:id', authenticateToken, updateProjectData);
-router.delete('/:id', authenticateToken, removeProject);
+  private async listProjects(req: AuthRequest, res: Response) {
+    const projects = await this.projectService.listProjects(req.user!.id);
 
-export default router;
+    res.json(projects);
+  }
+  
+  private async updateProjectData(req: AuthRequest, res: Response) {
+    const { id } = req.params;
+    const { repoPath } = validate(AddProjectDto, req.body);
+
+    await this.projectService.updateProject(id, repoPath);
+
+    res.sendStatus(200);
+  }
+
+  private async refreshProjectData(req: AuthRequest, res: Response) {
+    const { id } = req.params;
+
+    await this.projectService.refreshProject(id);
+
+    res.sendStatus(200);
+  }
+
+  private async removeProject(req: AuthRequest, res: Response) {
+    const { id } = req.params;
+
+    await this.projectService.removeProject(id);
+
+    res.sendStatus(200)
+  }
+}

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Alert,
-  CircularProgress,
-} from '@mui/material';
-import { useLogin } from '../hooks/useAuth';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { ApiError } from '../services/api';
+
+import { useLogin } from '../hooks/useAuth';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;

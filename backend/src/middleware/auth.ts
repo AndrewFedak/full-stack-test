@@ -1,13 +1,15 @@
 
 import { Request, Response, NextFunction } from 'express';
+
 import { HttpException } from '../exceptions/HttpException';
+
 import { verifyToken } from '../utils/jwt';
 
 export interface AuthRequest extends Request {
   user?: { id: string };
 }
 
-export function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) {
+export function authenticateToken(req: AuthRequest, _res: Response, next: NextFunction) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   

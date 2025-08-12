@@ -13,20 +13,13 @@ export const LoginDto = z.object({
 export const UserResponseDto = z.object({
   id: z.string(),
   email: z.string().email(),
-});
+}).strip();
 
 export const LoginResponseDto = z.object({
   token: z.string(),
-});
-
-export const UserDto = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-});
+}).strip();
 
 export type RegisterInput = z.infer<typeof RegisterDto>;
 export type LoginInput = z.infer<typeof LoginDto>;
 export type UserResponse = z.infer<typeof UserResponseDto>;
 export type LoginResponse = z.infer<typeof LoginResponseDto>;
-export type User = z.infer<typeof UserDto>;
