@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ValidationException, NotFoundException, ForbiddenException } from '../exceptions/HttpException';
-import { GitHubRepository, GitHubProjectData } from '../types/github';
+import { ValidationException, NotFoundException, ForbiddenException } from '../../exceptions/HttpException';
+import { GitHubRepository, GitHubProjectData } from '../../types/github';
 
 /**
  * Validates repository path format

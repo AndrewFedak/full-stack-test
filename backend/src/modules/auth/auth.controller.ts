@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import { validate } from '../utils/validate';
-import { catchAsync } from '../utils/catchAsync';
+import { Request, Response, Router } from 'express';
+import { catchAsync } from '../../utils/catchAsync';
+import { validate } from '../../utils/validate';
 
-import { RegisterDto, LoginDto } from '../dtos/auth.dto';
+import { RegisterDto, LoginDto } from './dtos/auth.dto';
 
-import { registerService, loginService } from '../services/authService';
+import { registerService, loginService } from './auth.service';
 
 export const register = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = validate(RegisterDto, req.body);
@@ -17,3 +17,10 @@ export const login = catchAsync(async (req: Request, res: Response) => {
   const result = await loginService(email, password);
   res.json(result);
 });
+
+const router = Router();
+
+router.post('/register', register);
+router.post('/login', login);
+
+export default router;

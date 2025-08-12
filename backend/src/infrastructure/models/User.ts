@@ -40,15 +40,3 @@ userSchema.virtual("id").get(function (this: IUser) {
 });
 
 export const User = mongoose.model<IUser>('User', userSchema);
-
-export async function createUser(email: string, password: string): Promise<IUser> {
-  return User.create({ email, password });
-}
-
-export async function findUserByEmail(email: string): Promise<IUser | null> {
-  return User.findOne({ email });
-}
-
-export async function findUserById(id: string): Promise<IUser | null> {
-  return User.findById(id);
-}

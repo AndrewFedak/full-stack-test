@@ -1,11 +1,10 @@
-import { ConflictException, UnauthorizedException } from '../exceptions/HttpException';
+import { ConflictException, UnauthorizedException } from "../../exceptions/HttpException";
+import { hashPassword, comparePassword } from "../../utils/crypto";
+import { generateToken } from "../../utils/jwt";
 
-import { hashPassword, comparePassword } from '../utils/crypto';
-import { generateToken } from '../utils/jwt';
+import { UserResponse, LoginResponse } from "./dtos/auth.dto";
 
-import { UserResponse, LoginResponse } from '../dtos/auth.dto';
-
-import { createUser, findUserByEmail } from '../infrastructure/models/User';
+import { findUserByEmail, createUser } from "./auth.repository";
 
 export async function registerService(email: string, password: string): Promise<UserResponse> {
   const existing = await findUserByEmail(email);

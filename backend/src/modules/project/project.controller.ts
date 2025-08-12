@@ -1,18 +1,12 @@
 
-import { Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
+import { Response, Router } from 'express';
+import { AuthRequest, authenticateToken } from '../../middleware/auth';
 
-import { validate } from '../utils/validate';
-import { catchAsync } from '../utils/catchAsync';
+import { validate } from '../../utils/validate';
+import { catchAsync } from '../../utils/catchAsync';
 
-import { AddProjectDto } from '../dtos/project.dto';
-
-import {
-  addProjectService,
-  listProjectsService,
-  updateProjectService,
-  removeProjectService
-} from '../services/projectService';
+import { AddProjectDto } from './dtos/project.dto';
+import { addProjectService, listProjectsService, updateProjectService, removeProjectService } from './project.service';
 
 export const addProject = catchAsync(async (req: AuthRequest, res: Response) => {
   const { repoPath } = validate(AddProjectDto, req.body);
@@ -37,3 +31,12 @@ export const removeProject = catchAsync(async (req: AuthRequest, res: Response) 
   await removeProjectService(id);
   res.status(204).send();
 });
+
+const router = Router();
+
+router.get('/', authenticateToken, listProjects);
+router.post('/', authenticateToken, addProject);
+router.put('/:id', authenticateToken, updateProjectData);
+router.delete('/:id', authenticateToken, removeProject);
+
+export default router;

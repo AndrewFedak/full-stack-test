@@ -1,7 +1,8 @@
-import { fetchRepositoryData } from '../utils/github';
+import { fetchRepositoryData } from './github.service';
 
-import { createProject, getProjectsByUser, deleteProject, getProjectById, updateProject } from '../infrastructure/models/Project';
-import { NotFoundException } from '../exceptions/HttpException';
+import { NotFoundException } from '../../exceptions/HttpException';
+
+import { createProject, getProjectsByUser, getProjectById, updateProject, deleteProject } from './project.repository';
 
 export async function addProjectService(repoPath: string, userId: string) {
   const gitHubRepositoryData = await fetchRepositoryData(repoPath);
