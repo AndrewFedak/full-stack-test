@@ -1,6 +1,5 @@
 import express, { Application } from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 
 import { connectToDatabase, disconnectFromDatabase } from "./infrastructure/mongodb";
 import { errorHandler } from "./middleware/errorHandler";
@@ -13,8 +12,6 @@ import { ProjectRepository } from "./modules/project/project.repository";
 import { GitHubService } from "./modules/project/github.service";
 import { ProjectService } from "./modules/project/project.service";
 import { ProjectController } from "./modules/project/project.controller";
-
-dotenv.config();
 
 class App {
   private app: Application;
