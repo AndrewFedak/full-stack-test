@@ -51,16 +51,9 @@ npm run dev
 ### Projects
 - `GET /api/projects` - Get user's projects (requires auth)
 - `POST /api/projects` - Add a new project (requires auth)
+- `PUT /api/projects/:id` - Update project repository path (requires auth)
+- `PUT /api/projects/:id/refresh` - Refresh project stats (requires auth)
 - `DELETE /api/projects/:id` - Remove a project (requires auth)
-
-## Database Migration
-
-This project has been migrated from Prisma/PostgreSQL to Mongoose/MongoDB. The main changes include:
-
-- Replaced Prisma client with Mongoose models
-- Updated ID types from numbers to strings (MongoDB ObjectId)
-- Updated all database operations to use Mongoose
-- Removed Prisma schema and configuration files
 
 ## Docker
 

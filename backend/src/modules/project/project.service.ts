@@ -4,11 +4,12 @@ import { validate } from "../../utils/validate";
 import { ProjectResponse, ProjectResponseDto } from "./dtos/project.dto";
 
 import { GitHubService } from "./github.service";
-import { ProjectRepository } from "./project.repository";
+
+import { IProjectRepository } from "./project.repository";
 
 export class ProjectService {
   constructor(
-    private readonly projectRepository: ProjectRepository,
+    private readonly projectRepository: IProjectRepository,
     private readonly gitHubService: GitHubService
   ) {}
 

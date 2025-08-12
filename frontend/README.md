@@ -72,6 +72,7 @@ The frontend integrates with the backend API endpoints:
 - `GET /api/projects` - List user's projects
 - `POST /api/projects` - Add new project
 - `PUT /api/projects/:id` - Update project
+- `PUT /api/projects/:id/refresh` - Refresh project
 - `DELETE /api/projects/:id` - Delete project
 
 ## Authentication
